@@ -5,12 +5,17 @@
     <div class="row">
       <div class="column pr-5">
         <?= $render('feed-editor', ['user'=>$loggedUser]); ?>
-        <?php foreach($feed as $feedItem): ?>
+        <?php foreach($feed['posts'] as $feedItem): ?>
           <?= $render('feed-item', [
             'loggedUser'=>$loggedUser,
             'data'=>$feedItem
           ]); ?>
         <?php endforeach ?>
+        <div class="feed-pagination">
+          <?php for($index = 0; $index < $feed['pagesCount']; $index++): ?>
+            <a class="<?= ($index == $feed['currentPage'] ? 'active' : '') ?>" href="<?= $base; ?>/?page=<?= $index; ?>"><?= $index + 1 ?></a>
+          <?php endfor; ?>
+        </div>
       </div>
       <div class="column side pl-5">
         <div class="box banners">

@@ -391,6 +391,24 @@ header .head-side {
   margin: 0;
 }
 
+.feed-pagination {
+  display: flex;
+  gap: 12px;
+}
+
+.feed-pagination a {
+  display: inline-block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #42227a;
+  border: 1px solid #CCCCCC;
+}
+
+.feed-pagination a:hover,
+.feed-pagination a.active {
+  background-color: #d1d9e0;
+}
+
 @media (max-width: 992px) {
   header .head-side-right {
     display: none !important;

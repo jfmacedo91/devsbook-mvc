@@ -41,7 +41,7 @@
             Muito legal, parabéns!
           </div>
         </div>
-      <?php endforeach ?>
+      <?php endforeach; ?>
       <div class="fic-answer row m-height-10 m-width-20">
         <div class="fic-item-photo">
           <a href=""><img src="<?= $base; ?>/media/avatars/<?= $loggedUser->avatar; ?>" /></a>
