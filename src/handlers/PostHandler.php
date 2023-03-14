@@ -17,6 +17,7 @@ class PostHandler {
       ])->execute();
     }
   }
+
   public static function getHomeFeed($userId, $page) {
     $perpage = 2;
 
@@ -72,5 +73,21 @@ class PostHandler {
       'pagesCount'=>$pagesCount,
       'currentPage'=>$page
     ];
+  }
+
+  public static function getPhotosFrom($userId) {
+    $photosData = Post::select()->where('user_id', $userId)->where('type', 'photo')->get();
+    $photos = [];
+    foreach($photosData as $photo) {
+      $newPost = new Post();
+      $newPost->id = $photo['id'];
+      $newPost->type = $photo['type'];
+      $newPost->created_at = $photo['created_at'];
+      $newPost->body = $photo['body'];
+
+      $photos[] = $newPost;
+    }
+
+    return $photos;
   }
 }

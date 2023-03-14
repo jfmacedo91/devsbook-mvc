@@ -349,13 +349,17 @@ header .head-side {
 }
 
 .user-photo-item {
+  flex: 1;
   margin-right: 10px;
+  aspect-ratio: 1;
 }
 .user-photo-item:last-child {
   margin-right: 0;
 }
 .user-photo-item img {
   max-width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tabs {
