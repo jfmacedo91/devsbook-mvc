@@ -1,7 +1,7 @@
 <aside class="mt-10">
   <nav>
     <a href="<?= $base; ?>">
-      <div class="menu-item active">
+      <div class="menu-item">
         <div class="menu-item-icon">
           <img src="<?= $base; ?>/assets/images/home-run.png" width="16" height="16" />
         </div>
