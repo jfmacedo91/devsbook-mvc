@@ -18,6 +18,7 @@ class LoginHandler {
     }
     return false;
   }
+
   public static function verifyLogin($email, $password) {
     $user = User::select()->where('email', $email)->one();
     if($user) {
@@ -29,10 +30,17 @@ class LoginHandler {
     }
     return false;
   }
+
+  public static function idExists($id) {
+    $user = User::select()->where('id', $id)->one();
+    return $user ? true : false;
+  }
+
   public static function emailExists($email) {
     $user = User::select()->where('email', $email)->one();
     return $user ? true : false;
   }
+
   public static function addUser($name, $email, $password, $birthdate) {
     $hash = password_hash($password, PASSWORD_DEFAULT);
     $token = md5(time().rand(0, 9999).time());
