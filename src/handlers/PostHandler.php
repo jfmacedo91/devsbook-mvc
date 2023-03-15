@@ -21,7 +21,6 @@ class PostHandler {
   public static function getHomeFeed($userId, $page) {
     $perpage = 2;
 
-    //1. Pegar lista de usuários que eu sigo.
     $userList = Relationship::select()->where('user_from', $userId)->get();
     $users = [];
     foreach($userList as $userItem) {
@@ -29,14 +28,40 @@ class PostHandler {
     }
     $users[] = $userId;
 
-    //2. Pegar os posts dessa galera ordenado pela data.
     $postList = Post::select()->where('user_id', 'in', $users)->orderBy('created_at', 'desc')->page($page, $perpage)->get();
 
     $postsCount = Post::select()->where('user_id', 'in', $users)->count();
 
     $pagesCount = ceil($postsCount / $perpage);
 
-    //3. Transformar o resultado em objetos dos models.
+    $posts = self::_postListToObject($postList, $userId);
+
+    return [
+      'posts'=>$posts,
+      'pagesCount'=>$pagesCount,
+      'currentPage'=>$page
+    ];
+  }
+
+  public static function getUserFeed($userId, $page, $loggedUserId) {
+    $perpage = 2;
+
+    $postList = Post::select()->where('user_id', $userId)->orderBy('created_at', 'desc')->page($page, $perpage)->get();
+
+    $postsCount = Post::select()->where('user_id', $userId)->count();
+
+    $pagesCount = ceil($postsCount / $perpage);
+
+    $posts = self::_postListToObject($postList, $loggedUserId);
+
+    return [
+      'posts'=>$posts,
+      'pagesCount'=>$pagesCount,
+      'currentPage'=>$page
+    ];
+  }
+
+  public static function _postListToObject($postList, $loggedUserId) {
     $posts = [];
     foreach($postList as $postItem) {
       $newPost = new Post();
@@ -46,11 +71,10 @@ class PostHandler {
       $newPost->body = $postItem['body'];
       $newPost->mine = false;
 
-      if($postItem['user_id'] == $userId) {
+      if($postItem['user_id'] == $loggedUserId) {
         $newPost->mine = true;
       }
 
-      //4. Preencher as informações adicionais no post.
       $newUser = User::select()->where('id', $postItem['user_id'])->one();
 
       $newPost->user = new User();
@@ -58,21 +82,15 @@ class PostHandler {
       $newPost->user->name = $newUser['name'];
       $newPost->user->avatar = $newUser['avatar'];
 
-      //4.1 Preencher informações de likes
       $newPost->likeCount = 0;
       $newPost->liked = false;
 
-      //4.2 Preencher informações de comentários
       $newPost->comments = [];
 
       $posts[] = $newPost;
     }
-    //5. Retornar o resultado.
-    return [
-      'posts'=>$posts,
-      'pagesCount'=>$pagesCount,
-      'currentPage'=>$page
-    ];
+
+    return $posts;
   }
 
   public static function getPhotosFrom($userId) {

@@ -23,8 +23,16 @@
         <img src="<?= $base; ?>/assets/images/more.png" />
       </div>
     </div>
-    <div class="feed-item-body mt-10 m-width-20">
-      <?= nl2br($data->body); ?>
+    <div class="feed-item-body mt-10 m-width-20"><?php
+          switch($data->type) {
+            case 'text':
+              echo nl2br($data->body);
+              break;
+            case 'photo':
+              echo '<img src="'.$base.'/media/uploads/'.$data->body.'" />';
+              break;
+          }
+        ?>
     </div>
     <div class="feed-item-buttons row mt-20 m-width-20">
       <div class="like-btn <?= ($data->liked ? 'on' : '') ?>"><?= $data->likeCount; ?></div>

@@ -350,6 +350,7 @@ header .head-side {
 
 .user-photo-item {
   flex: 1;
+  max-width: 25%;
   margin-right: 10px;
   aspect-ratio: 1;
 }
