@@ -109,4 +109,22 @@ class UserHandler {
 
     return false;
   }
+
+  public static function isFollowing($from, $to) {
+    $data = Relationship::select()->where('user_from', $from)->where('user_to', $to)->one();
+
+    if($data) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public static function follow($from, $to) {
+    Relationship::insert(['user_from'=>$from, 'user_to'=>$to])->execute();
+  }
+
+  public static function unfollow($from, $to) {
+    Relationship::delete()->where('user_from', $from)->where('user_to', $to)->execute();
+  }
 }
