@@ -31,6 +31,10 @@
 .m-20 {
     margin:20px;
 }
+.m-width-8 {
+    margin-left:8px;
+    margin-right:8px;
+}
 .m-width-10 {
     margin-left:10px;
     margin-right:10px;
