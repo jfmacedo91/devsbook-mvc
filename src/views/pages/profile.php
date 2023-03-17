@@ -105,7 +105,7 @@
               <span>(<?= count($user->photos); ?>)</span>
             </div>
             <div class="box-header-buttons">
-              <a href="">ver todos</a>
+              <a href="<?= $base; ?>/perfil/<?= $user->id; ?>/fotos">ver todos</a>
             </div>
           </div>
 

@@ -350,9 +350,8 @@ header .head-side {
 
 .user-photo-item {
   flex: 1;
-  max-width: 25%;
   margin-right: 10px;
-  aspect-ratio: 1;
+  max-width: 25%;
 }
 .user-photo-item:last-child {
   margin-right: 0;
@@ -392,8 +391,10 @@ header .head-side {
   gap: 10px;
   margin: 20px;
 }
+
 .full-user-photos .user-photo-item {
   margin: 0;
+  max-width: 100%;
 }
 
 .feed-pagination {
