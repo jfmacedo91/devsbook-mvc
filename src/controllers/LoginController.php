@@ -15,6 +15,7 @@ class LoginController extends Controller {
       'flash' => $flash
     ]);
   }
+
   public function signinAction() {
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $password = filter_input(INPUT_POST, 'password');
@@ -32,6 +33,7 @@ class LoginController extends Controller {
       $this->redirect('/login');
     }
   }
+
   public function signup() {
     $flash = '';
     if(!empty($_SESSION['flash'])) {
@@ -42,6 +44,7 @@ class LoginController extends Controller {
       'flash' => $flash
     ]);
   }
+
   public function signupAction() {
     $name = filter_input(INPUT_POST, 'name');
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -74,5 +77,10 @@ class LoginController extends Controller {
     } else {
       $this->redirect('/cadastro');
     }
+  }
+
+  public function logout() {
+    $_SESSION['token'] = '';
+    $this->redirect('/login');
   }
 }
