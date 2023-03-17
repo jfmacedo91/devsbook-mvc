@@ -44,9 +44,7 @@
     </div>
 
     <div class="row">
-
       <div class="column side pr-5">
-
         <div class="box">
           <div class="box-body">
             <div class="user-info-mini">
@@ -77,11 +75,10 @@
               <span>(<?= count($user->following); ?>)</span>
             </div>
             <div class="box-header-buttons">
-              <a href="">ver todos</a>
+              <a href="<?= $base; ?>/perfil/<?= $user->id ?>/amigos">ver todos</a>
             </div>
           </div>
           <div class="box-body friend-list">
-
             <?php for ($index=0; $index < 9; $index++): ?>
               <?php if(isset($user->following[$index])): ?>
                 <div class="friend-icon">
@@ -96,13 +93,11 @@
                 </div>
               <?php endif; ?>
             <?php endfor; ?>
-
           </div>
         </div>
-
       </div>
-      <div class="column pl-5">
 
+      <div class="column pl-5">
         <div class="box">
           <div class="box-header m-10">
             <div class="box-header-text">
@@ -113,6 +108,7 @@
               <a href="">ver todos</a>
             </div>
           </div>
+
           <div class="box-body row m-20">
             <?php for ($index=0; $index < 4; $index++): ?>
               <?php if(isset($user->photos[$index])): ?>
@@ -139,6 +135,7 @@
             'data'=>$feedItem
           ]); ?>
         <?php endforeach ?>
+
         <div class="feed-pagination">
           <?php for($index = 0; $index < $feed['pagesCount']; $index++): ?>
             <a class="<?= ($index == $feed['currentPage'] ? 'active' : '') ?>" href="<?= $base; ?>/perfil/<?= $user->id; ?>?page=<?= $index; ?>"><?= $index + 1 ?></a>
@@ -147,6 +144,5 @@
       </div>
     </div>
   </section>
-</section>
 </section>
 <?= $render('footer'); ?>
