@@ -3,7 +3,7 @@ namespace src\controllers;
 
 use \core\Controller;
 use \src\handlers\UserHandler;
-use src\handlers\PostHandler;
+use \src\handlers\PostHandler;
 
 class PostController extends Controller {
 	private $loggedUser;
@@ -13,6 +13,7 @@ class PostController extends Controller {
 			$this->redirect('/login');
 		}
 	}
+
 	public function new() {
 		$body = filter_input(INPUT_POST, 'body');
     if($body) {

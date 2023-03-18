@@ -127,4 +127,22 @@ class UserHandler {
   public static function unfollow($from, $to) {
     Relationship::delete()->where('user_from', $from)->where('user_to', $to)->execute();
   }
+
+  public static function searchUser($searchTerm) {
+    $users = [];
+    $data = User::select()->where('name', 'like', '%'.$searchTerm.'%')->get();
+
+    if($data) {
+      foreach($data as $user) {
+        $newUser = new User();
+        $newUser->id = $user['id'];
+        $newUser->name = $user['name'];
+        $newUser->avatar = $user['avatar'];
+
+        $users[] = $newUser;
+      }
+    }
+
+    return $users;
+  }
 }
