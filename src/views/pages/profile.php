@@ -63,32 +63,34 @@
       </div>
 
       <div class="column pl-5">
-        <div class="box">
-          <div class="box-header m-10">
-            <div class="box-header-text">
-              Fotos
-              <span>(<?= count($user->photos); ?>)</span>
+        <?php if(count($user->photos) != 0): ?>
+          <div class="box">
+            <div class="box-header m-10">
+              <div class="box-header-text">
+                Fotos
+                <span>(<?= count($user->photos); ?>)</span>
+              </div>
+              <div class="box-header-buttons">
+                <a href="<?= $base; ?>/perfil/<?= $user->id; ?>/fotos">ver todos</a>
+              </div>
             </div>
-            <div class="box-header-buttons">
-              <a href="<?= $base; ?>/perfil/<?= $user->id; ?>/fotos">ver todos</a>
-            </div>
-          </div>
 
-          <div class="box-body row m-20">
-            <?php for ($index=0; $index < 4; $index++): ?>
-              <?php if(isset($user->photos[$index])): ?>
-                <div class="user-photo-item">
-                  <a href="#modal-<?= $user->photos[$index]->id; ?>" rel="modal:open">
-                    <img src="<?= $base; ?>/media/uploads/<?= $user->photos[$index]->body; ?>" />
-                  </a>
-                  <div id="modal-<?= $user->photos[$index]->id; ?>" style="display:none">
-                    <img src="<?= $base; ?>/media/uploads/<?= $user->photos[$index]->body; ?>" />
+            <div class="box-body row m-20">
+              <?php for ($index=0; $index < 4; $index++): ?>
+                <?php if(isset($user->photos[$index])): ?>
+                  <div class="user-photo-item">
+                    <a href="#modal-<?= $user->photos[$index]->id; ?>" rel="modal:open">
+                      <img src="<?= $base; ?>/media/uploads/<?= $user->photos[$index]->body; ?>" />
+                    </a>
+                    <div id="modal-<?= $user->photos[$index]->id; ?>" style="display:none">
+                      <img src="<?= $base; ?>/media/uploads/<?= $user->photos[$index]->body; ?>" />
+                    </div>
                   </div>
-                </div>
-              <?php endif; ?>
-            <?php endfor; ?>
+                <?php endif; ?>
+              <?php endfor; ?>
+            </div>
           </div>
-        </div>
+        <?php endif; ?>
 
         <?php if($user->id == $loggedUser->id) {
           echo $render('feed-editor', ['user'=>$loggedUser]);
