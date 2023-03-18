@@ -9,7 +9,7 @@
       display: grid;
       place-content: center;
       min-height: 100vh;
-      font-family: Helvetica;
+      font-family: Inter;
       color: #42227a;
       background-color: #edeef0;
     }
