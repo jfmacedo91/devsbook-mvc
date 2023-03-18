@@ -58,6 +58,28 @@ class UserHandler {
     return $token;
   }
 
+  public static function updateUser($id, $name, $birthdate, $email, $city, $work, $password = false) {
+    if($password != false) {
+      $hash = password_hash($password, PASSWORD_DEFAULT);
+      User::update()->set([
+        'name' => $name,
+        'birthdate' => $birthdate,
+        'email' => $email,
+        'city' => $city,
+        'work' => $work,
+        'password' => $hash
+        ])->where('id', $id)->execute();
+      } else {
+      User::update()->set([
+        'name' => $name,
+        'birthdate' => $birthdate,
+        'email' => $email,
+        'city' => $city,
+        'work' => $work
+      ])->where('id', $id)->execute();
+    }
+  }
+
   public static function getUser($id, $full = false) {
     $data = User::select()->where('id', $id)->one();
 
@@ -65,6 +87,7 @@ class UserHandler {
       $user = new User();
       $user->id = $data['id'];
       $user->name = $data['name'];
+      $user->email = $data['email'];
       $user->birthdate = $data['birthdate'];
       $user->city = $data['city'];
       $user->work = $data['work'];

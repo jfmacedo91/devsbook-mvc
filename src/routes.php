@@ -1,6 +1,5 @@
 <?php
 use core\Router;
-use src\controllers\LoginController;
 
 $router = new Router();
 
@@ -26,6 +25,7 @@ $router->get('/fotos', 'ProfileController@photos');
 
 $router->get('/pesquisa', 'SearchController@index');
 
-$router->get('/sair', 'LoginController@logout');
+$router->get('/config', 'ProfileController@config');
+$router->post('/config', 'ProfileController@configAction');
 
-// $router->get('/config');
+$router->get('/sair', 'LoginController@logout');

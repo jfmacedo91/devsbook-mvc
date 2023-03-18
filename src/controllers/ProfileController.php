@@ -122,4 +122,89 @@ class ProfileController extends Controller {
 			'isFollowing' => $isFollowing
 		]);
 	}
+
+	public function config() {
+    $flash = '';
+    if(!empty($_SESSION['flash'])) {
+      $flash = $_SESSION['flash'];
+      $_SESSION['flash'] = '';
+    }
+
+		$user = UserHandler::getUser($this->loggedUser->id);
+
+		$this->render('config', [
+			'loggedUser' => $this->loggedUser,
+			'user' => $user,
+			'flash' => $flash
+		]);
+	}
+
+	public function configAction() {
+    $name = filter_input(INPUT_POST, 'name');
+    $birthdate = filter_input(INPUT_POST, 'birthdate');
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $city = filter_input(INPUT_POST, 'city');
+    $work = filter_input(INPUT_POST, 'work');
+    $password = filter_input(INPUT_POST, 'password');
+    $passwordConfirm = filter_input(INPUT_POST, 'passwordConfirm');
+
+		$user = UserHandler::getUser($this->loggedUser->id);
+
+		if($name && $birthdate && $email) {
+      $birthdate = explode('/', $birthdate);
+
+      if(count($birthdate) != 3) {
+        $_SESSION['flash'] = 'Data de nascimento inválida!';
+        $this->redirect('/config');
+      }
+
+      $birthdate = $birthdate[2].'-'.$birthdate[1].'-'.$birthdate[0];
+
+      if(strtotime($birthdate) === false) {
+        $_SESSION['flash'] = 'Data de nascimento inválida!';
+        $this->redirect('/config');
+      }
+
+			if($password != '') {
+				if($email != $user->email) {
+					if($password === $passwordConfirm) {
+						if(UserHandler::emailExists($email) === false) {
+							UserHandler::updateUser($this->loggedUser->id, $name, $birthdate, $email, $city, $work, $password);
+							$this->redirect('/config');
+						} else {
+							$_SESSION['flash'] = 'Email já cadastrado!';
+							$this->redirect('/config');
+						}
+					} else {
+						$_SESSION['flash'] = 'As senhas digitadas não são iguais!';
+						$this->redirect('/config');
+					}
+				} else {
+					if($password === $passwordConfirm) {
+						UserHandler::updateUser($this->loggedUser->id, $name, $birthdate, $email, $city, $work, $password);
+						$this->redirect('/config');
+					} else {
+						$_SESSION['flash'] = 'As senhas digitadas não são iguais!';
+						$this->redirect('/config');
+					}
+				}
+			} else {
+				if($email != $user->email) {
+					if(UserHandler::emailExists($email) === false) {
+						UserHandler::updateUser($this->loggedUser->id, $name, $birthdate, $email, $city, $work);
+						$this->redirect('/config');
+					} else {
+						$_SESSION['flash'] = 'Email já cadastrado!';
+						$this->redirect('/config');
+					}
+				} else {
+					UserHandler::updateUser($this->loggedUser->id, $name, $birthdate, $email, $city, $work);
+					$this->redirect('/config');
+				}
+			}
+
+    } else {
+      $this->redirect('/config');
+    }
+	}
 }

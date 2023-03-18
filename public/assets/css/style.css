@@ -435,7 +435,42 @@ header .head-side {
 }
 
 .button:hover {
-  background-color: #7247BB;
+  background-color: #8459ce;
+}
+
+form.config .flash {
+	display: block;
+	margin-bottom: 8px;
+	padding: 4px 8px;
+	text-align: center;
+	border: 1px solid #FB5252;
+	border-radius: 10px;
+	color: #FB5252;
+	background-color: #FB525220;
+}
+
+form.config label {
+  margin-bottom: 5px;
+}
+
+form.config input {
+  font-size: 15px;
+  height: 40px;
+  width: 100%;
+  outline: 0;
+  border: 0;
+  background-color: #eee;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+form.config input:focus {
+  background-color: #ddd;
+}
+
+form.config .button {
+  align-self: flex-start;
 }
 
 @media (max-width: 992px) {
