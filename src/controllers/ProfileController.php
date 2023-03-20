@@ -251,18 +251,8 @@ class ProfileController extends Controller {
 			$originalWidth, $originalHeight
 		);
 
-		switch($file['type']) {
-			case 'image/jpeg':
-			case 'image/jpg':
-				$fileName = md5(time().rand(0,9999)).'.jpg';
-				imagejpeg($finalImage, $folder.'/'.$fileName);
-			break;
-			case 'image/png':
-				$fileName = md5(time().rand(0,9999)).'.png';
-				imagepng($finalImage, $folder.'/'.$fileName);
-			break;
-		}
-
+		$fileName = md5(time().rand(0,9999)).'.jpg';
+		imagejpeg($finalImage, $folder.'/'.$fileName);
 
 		return $fileName;
 	}
