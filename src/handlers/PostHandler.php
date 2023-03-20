@@ -2,6 +2,7 @@
 namespace src\handlers;
 
 use \src\models\Post;
+use \src\models\PostLike;
 use \src\models\User;
 use \src\models\Relationship;
 
@@ -19,7 +20,7 @@ class PostHandler {
   }
 
   public static function getHomeFeed($userId, $page) {
-    $perpage = 2;
+    $perpage = 10;
 
     $userList = Relationship::select()->where('user_from', $userId)->get();
     $users = [];
@@ -44,7 +45,7 @@ class PostHandler {
   }
 
   public static function getUserFeed($userId, $page, $loggedUserId) {
-    $perpage = 2;
+    $perpage = 10;
 
     $postList = Post::select()->where('user_id', $userId)->orderBy('created_at', 'desc')->page($page, $perpage)->get();
 
@@ -82,8 +83,10 @@ class PostHandler {
       $newPost->user->name = $newUser['name'];
       $newPost->user->avatar = $newUser['avatar'];
 
-      $newPost->likeCount = 0;
-      $newPost->liked = false;
+      $postLikes = PostLike::select()->where('post_id', $postItem['id'])->get();
+
+      $newPost->likeCount = count($postLikes);
+      $newPost->liked = self::isLiked($postItem['id'], $loggedUserId);
 
       $newPost->comments = [];
 
@@ -91,6 +94,24 @@ class PostHandler {
     }
 
     return $posts;
+  }
+
+  public static function isLiked($postId, $loggedUserId) {
+    $liked = PostLike::select()->where('post_id', $postId)->where('user_id', $loggedUserId)->one();
+
+    if($liked) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public static function addLike($postId, $loggedUserId) {
+    PostLike::insert(['post_id' => $postId, 'user_id' => $loggedUserId, 'created_at' => date('Y-m-d H:i:s')])->execute();
+  }
+
+  public static function deleteLike($postId, $loggedUserId) {
+    PostLike::delete()->where('post_id', $postId)->where('user_id', $loggedUserId)->execute();
   }
 
   public static function getPhotosFrom($userId) {
