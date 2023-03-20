@@ -5,10 +5,15 @@
     <div class="box">
       <div class="column m-10 pr-10 pl-10">
         <h1>Configurações</h1>
-        <form class="config column" action="<?= $base; ?>/config" method="POST">
+        <form class="config column" enctype="multipart/form-data" action="<?= $base; ?>/config" method="POST">
           <?php if(!empty($flash)): ?>
             <span class="flash mt-10"><?= $flash ?></span>
           <?php endif; ?>
+          <label for="avatar">Novo avatar:</label>
+          <input type="file" name="avatar" id="avatar">
+          <label for="cover">Nova capa:</label>
+          <input type="file" name="cover" id="cover">
+          <hr class="mt-10">
           <label class="mt-10" for="name">Nome completo:</label>
           <input type="text" name="name" id="name" value="<?= $user->name; ?>">
           <label class="mt-10" for="birthdate">Data de nascimentto:</label>
@@ -19,7 +24,7 @@
           <input type="text" name="city" id="city" value="<?= $user->city; ?>">
           <label class="mt-10" for="work">Trabalho:</label>
           <input type="text" name="work" id="work" value="<?= $user->work; ?>">
-          <hr>
+          <hr class="mt-10">
           <label class="mt-10" for="password">Nova senha:</label>
           <input type="password" name="password" id="password">
           <label class="mt-10" for="passwordConfirm">Confirmar nova senha:</label>

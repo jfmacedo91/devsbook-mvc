@@ -188,9 +188,82 @@ class ProfileController extends Controller {
 				}
 			}
 
+			if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['tmp_name'])) {
+				$newAvatar = $_FILES['avatar'];
+
+				if(in_array($newAvatar['type'], ['image/jpeg', 'image/jpg', 'image/png'])) {
+					$avatarName = $this->cutImage($newAvatar, 200, 200, 'media/avatars');
+					$updateFields['avatar'] = $avatarName;
+				} else {
+					$_SESSION['flash'] = 'Os tipos de imagens suportados são JPEG, JPG e PNG!';
+					$this->redirect('/config');
+				}
+			}
+
+			if(isset($_FILES['cover']) && !empty($_FILES['cover']['tmp_name'])) {
+				$newCover = $_FILES['cover'];
+
+				if(in_array($newCover['type'], ['image/jpeg', 'image/jpg', 'image/png'])) {
+					$coverName = $this->cutImage($newCover, 850, 310, 'media/covers');
+					$updateFields['cover'] = $coverName;
+				} else {
+					$_SESSION['flash'] = 'Os tipos de imagens suportados são JPEG, JPG e PNG!';
+					$this->redirect('/config');
+				}
+			}
+
 			UserHandler::updateUser($updateFields, $this->loggedUser->id);
 		}
 
 		$this->redirect('/config');
+	}
+
+	private function cutImage($file, $width, $height, $folder) {
+		[$originalWidth, $originalHeight] = getimagesize($file['tmp_name']);
+		$ratio = $originalWidth / $originalHeight;
+		
+		$newWidth = $width;
+		$newHeight = $newWidth / $ratio;
+
+		if($newHeight < $height) {
+			$newHeight = $height;
+			$newWidth = $newHeight * $ratio;
+		}
+
+		$xPosition = ($width - $newWidth) / 2;
+		$yPosition = ($height - $newHeight) / 2;
+
+		$finalImage = imagecreatetruecolor($width, $height);
+		switch($file['type']) {
+			case 'image/jpeg':
+			case 'image/jpg':
+				$image = imagecreatefromjpeg($file['tmp_name']);
+			break;
+			case 'image/png':
+				$image = imagecreatefrompng($file['tmp_name']);
+			break;
+		}
+
+		imagecopyresampled(
+			$finalImage, $image,
+			$xPosition, $yPosition, 0, 0,
+			$newWidth, $newHeight,
+			$originalWidth, $originalHeight
+		);
+
+		switch($file['type']) {
+			case 'image/jpeg':
+			case 'image/jpg':
+				$fileName = md5(time().rand(0,9999)).'.jpg';
+				imagejpeg($finalImage, $folder.'/'.$fileName);
+			break;
+			case 'image/png':
+				$fileName = md5(time().rand(0,9999)).'.png';
+				imagepng($finalImage, $folder.'/'.$fileName);
+			break;
+		}
+
+
+		return $fileName;
 	}
 }
