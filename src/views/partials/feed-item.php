@@ -39,20 +39,22 @@
       <div class="msg-btn"><?= count($data->comments); ?></div>
     </div>
     <div class="feed-item-comments">
-      <?php foreach($data->comments as $comment): ?>
-        <div class="fic-item row m-height-10 m-width-20">
-          <div class="fic-item-photo">
-            <a href=""><img src="media/avatars/default.jpg" /></a>
+      <div class="feed-item-comments-area">
+        <?php foreach($data->comments as $comment): ?>
+          <div class="fic-item row m-height-10 m-width-20">
+            <div class="fic-item-photo">
+              <a href="<?= $base; ?>/perfil/<?= $comment['userId'] ?>"><img src="<?= $base; ?>/media/avatars/<?= $comment['userAvatar']; ?>" /></a>
+            </div>
+            <div class="fic-item-info">
+              <a href="<?= $base; ?>/perfil/<?= $comment['userId'] ?>"><?= $comment['userName']; ?></a>
+              <?= nl2br($comment['body']); ?>
+            </div>
           </div>
-          <div class="fic-item-info">
-            <a href="">Bonieky Lacerda</a>
-            Muito legal, parabéns!
-          </div>
-        </div>
-      <?php endforeach; ?>
+        <?php endforeach; ?>
+      </div>
       <div class="fic-answer row m-height-10 m-width-20">
         <div class="fic-item-photo">
-          <a href=""><img src="<?= $base; ?>/media/avatars/<?= $loggedUser->avatar; ?>" /></a>
+          <img src="<?= $base; ?>/media/avatars/<?= $loggedUser->avatar; ?>" /></a>
         </div>
         <input type="text" class="fic-item-field" placeholder="Escreva um comentário" />
       </div>

@@ -2,6 +2,7 @@
 namespace src\handlers;
 
 use \src\models\Post;
+use \src\models\PostComment;
 use \src\models\PostLike;
 use \src\models\User;
 use \src\models\Relationship;
@@ -88,7 +89,13 @@ class PostHandler {
       $newPost->likeCount = count($postLikes);
       $newPost->liked = self::isLiked($postItem['id'], $loggedUserId);
 
-      $newPost->comments = [];
+      $newPost->comments = PostComment::select()->where('post_id', $postItem['id'])->get();
+      foreach($newPost->comments as $key => $comment) {
+        $commentUser = User::select()->where('id', $comment['user_id'])->one();
+        $newPost->comments[$key]['userId'] = $commentUser['id'];
+        $newPost->comments[$key]['userName'] = $commentUser['name'];
+        $newPost->comments[$key]['userAvatar'] = $commentUser['avatar'];
+      }
 
       $posts[] = $newPost;
     }
@@ -112,6 +119,10 @@ class PostHandler {
 
   public static function deleteLike($postId, $loggedUserId) {
     PostLike::delete()->where('post_id', $postId)->where('user_id', $loggedUserId)->execute();
+  }
+
+  public static function addComment($postId, $body, $userId) {
+    PostComment::insert(['post_id' => $postId, 'user_id' => $userId, 'created_at' => date('Y-m-d H:i:s'), 'body' => $body])->execute();
   }
 
   public static function getPhotosFrom($userId) {

@@ -31,3 +31,4 @@ $router->post('/config', 'ProfileController@configAction');
 $router->get('/sair', 'LoginController@logout');
 
 $router->get('/ajax/like/{id}', 'AjaxController@like');
+$router->post('/ajax/comment', 'AjaxController@comment');
