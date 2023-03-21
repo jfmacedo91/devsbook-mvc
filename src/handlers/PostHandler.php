@@ -126,7 +126,7 @@ class PostHandler {
   }
 
   public static function getPhotosFrom($userId) {
-    $photosData = Post::select()->where('user_id', $userId)->where('type', 'photo')->get();
+    $photosData = Post::select()->where('user_id', $userId)->where('type', 'photo')->orderBy('created_at', 'desc')->get();
     $photos = [];
     foreach($photosData as $photo) {
       $newPost = new Post();
@@ -139,5 +139,21 @@ class PostHandler {
     }
 
     return $photos;
+  }
+
+  public static function delete($postId, $userId) {
+    $post = Post::select()->where('id', $postId)->where('user_id', $userId)->one();
+
+    if($post) {
+      PostLike::delete()->where('post_id', $postId)->execute();
+      PostComment::delete()->where('post_id', $postId)->execute();
+      if($post['type'] === 'photo') {
+        $img = 'media/uploads/'.$post['body'];
+        if(file_exists($img)) {
+          unlink($img);
+        }
+      }
+      Post::delete()->where('id', $postId)->execute();
+    }
   }
 }

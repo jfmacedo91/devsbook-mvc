@@ -25,14 +25,13 @@
             </div>
           </div>
           <div class="box-body">
-            <a href=""><img
-                src="https://www.meioemensagem.com.br/wp-content/uploads/2023/02/Mercado-Ads_Programatica.jpg" /></a>
-            <a href=""><img src="https://i.pinimg.com/originals/8b/5d/36/8b5d363aba0ba42c6997d477b4001ca0.jpg" /></a>
+            <a href=""><img src="https://alunos.b7web.com.br/media/courses/php.jpg" /></a>
+            <a href=""><img src="https://alunos.b7web.com.br/media/courses/laravel.jpg" /></a>
           </div>
         </div>
         <div class="box">
           <div class="box-body m-10">
-            Criado com ❤️ por B7Web
+            Criado com <?= "\u{1F49C}" ?> por B7Web
           </div>
         </div>
       </div>
